@@ -1,0 +1,19 @@
+{
+  "name": "express_routes",
+  "version": "1.0.0",
+  "description": "A web application to view art",
+  "main": "main.js",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "scripts": {
+    "start": "nodemon main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Claude Farmer",
+  "license": "ISC"
+}
