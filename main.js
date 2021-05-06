@@ -6,7 +6,9 @@ const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 
 app = express();
-app.use(layouts)
+app.use(express.static
+  ("public"));
+app.use(layouts);
 app.set("view engine", "ejs");
 app.use(express.static('public'));
 app.use(express.json());
