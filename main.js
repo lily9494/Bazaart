@@ -20,16 +20,17 @@ app.get("/home/:userHome", homeController.sendReqParam)
     console.log(`The Express.js server has started and is listening
    ➥ on port number: ${port}`);
   });
-app.use((req, res, next) => {
-  console.log(`request made to: ${req.url}`);
 
-  next();
-});
 app.post("/", (req, res) => {
   console.log(req.body);
   console.log(req.query);
   res.send("POST Successful!");
 })
+app.use((req, res, next) => {
+  console.log(`request made to: ${req.url}`);
+
+  next();
+});
 
 app.use(errorController.respondNoResourceFound);
 app.use(errorController.respondInternalError);
