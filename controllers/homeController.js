@@ -12,4 +12,11 @@ exports.sendReqParam = (req, res) => {
     
  res.render("info");
    }
-   
+   exports.respondProfile = (req, res) => {
+    
+    res.render("profile");
+      }
+   exports.registration = (req, res) => {
+    
+    res.render("register");
+      } 
