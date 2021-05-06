@@ -8,3 +8,8 @@ exports.sendReqParam = (req, res) => {
     let paramsName = req.params.myName;
  res.render("profile", { name: paramsName });
    }
+   exports.respondInfo = (req, res) => {
+    
+ res.render("info");
+   }
+   
