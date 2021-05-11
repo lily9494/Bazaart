@@ -17,6 +17,7 @@ app.use(express.urlencoded({
 }));
 app.get("/profile/:myName", homeController.respondWithName);
 app.get("/", homeController.respondInfo);
+app.get("/register", homeController.registration);
 app.get("/home/:userHome", homeController.sendReqParam)
   .listen(port, () => {
     console.log(`The Express.js server has started and is listening
