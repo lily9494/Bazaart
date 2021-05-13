@@ -25,11 +25,12 @@ exports.saveUser = (req, res) => {
     lastName: req.body.lastName,
     email: req.body.email,
     username: req.body.username,
+    username: req.body.password,
   });
   newUser
     .save()
     .then(() => {
-      res.render("thanks");
+      res.render("activationAcc");
     })
     .catch((error) => {
       res.send(error);

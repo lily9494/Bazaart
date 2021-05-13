@@ -3,6 +3,7 @@ mongoose.connect("mongodb://localhost:27017/bazaart", {
   useNewUrlParser: true,
 });
 const User = require("./models/user");
+mongoose.Promise =global.Promise;
 
 const port = 8080;
 http = require("http");
@@ -24,7 +25,8 @@ app.use(
   })
 );
 app.get("/profile/:myName", homeController.respondWithName);
-app.get("/", homeController.respondInfo);
+app.get("/", homeController.respondHomePageWebsite);
+app.get("/login", homeController.respondWithLogin);
 //app.get("/register", homeController.registration);
 app.get("/home/:userHome", homeController.sendReqParam).listen(port, () => {
   console.log(`The Express.js server has started and is listening
@@ -33,13 +35,9 @@ app.get("/home/:userHome", homeController.sendReqParam).listen(port, () => {
 
 app.get("/users", usersController.getAllUsers);
 app.get("/register", usersController.getRegistrationPage);
-app.post("/save", usersController.saveUser);
+app.post("/", usersController.saveUser);
 
-app.post("/", (req, res) => {
-  console.log(req.body);
-  console.log(req.query);
-  res.send("POST Successful!");
-});
+
 app.use((req, res, next) => {
   console.log(`request made to: ${req.url}`);
 
