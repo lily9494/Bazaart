@@ -1,31 +1,46 @@
+
+
 const port = process.env.PORT || 5000;
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/bazaart", {
+  useNewUrlParser: true,
+});
+const User = require("./models/user");
+mongoose.Promise =global.Promise;
+
+
 http = require("http");
 express = require("express");
 layouts = require("express-ejs-layouts");
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
+const usersController = require("./controllers/userController");
 
 app = express();
-app.use(layouts)
+app.use(express.static("public"));
+app.use(layouts);
 app.set("view engine", "ejs");
-app.use(express.static('public'));
+app.use(express.static("public"));
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: false
-}));
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
 app.get("/profile/:myName", homeController.respondWithName);
-app.get("/", homeController.respondInfo);
-app.get("/home/:userHome", homeController.sendReqParam)
-  .listen(port, () => {
-    console.log(`The Express.js server has started and is listening
+app.get("/", homeController.respondHomePageWebsite);
+app.get("/login", homeController.respondWithLogin);
+//app.get("/register", homeController.registration);
+app.get("/home/:userHome", homeController.sendReqParam).listen(port, () => {
+  console.log(`The Express.js server has started and is listening
    ➥ on port number: ${port}`);
-  });
+});
 
-app.post("/", (req, res) => {
-  console.log(req.body);
-  console.log(req.query);
-  res.send("POST Successful!");
-})
+app.get("/users", usersController.getAllUsers);
+app.get("/register", usersController.getRegistrationPage);
+app.post("/", usersController.saveUser);
+
+
 app.use((req, res, next) => {
   console.log(`request made to: ${req.url}`);
 
@@ -49,7 +64,6 @@ app.use(errorController.respondInternalError);
 //     res.writeHead(httpStatus.OK,contentTypes.html);
 //     utiles.getFile("views/home.html",res);
 //     });
-
 
 // http.createServer(router.handle).listen(port);
 // console.log("works")

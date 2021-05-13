@@ -8,8 +8,19 @@ exports.sendReqParam = (req, res) => {
     let paramsName = req.params.myName;
  res.render("profile", { name: paramsName });
    }
-   exports.respondInfo = (req, res) => {
+   exports.respondHomePageWebsite = (req, res) => {
     
- res.render("info");
+ res.render("homePageWebsite");
    }
-   
+   exports.respondProfile = (req, res) => {
+    
+    res.render("profile");
+      }
+   exports.registration = (req, res) => {
+    
+    res.render("register");
+      } 
+   exports.respondWithLogin = (req, res) => {
+    
+    res.render("login");
+      } 
