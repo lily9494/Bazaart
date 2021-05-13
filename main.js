@@ -5,7 +5,10 @@ mongoose.connect("mongodb://localhost:27017/bazaart", {
 const User = require("./models/user");
 mongoose.Promise =global.Promise;
 
-const port = 8080;
+
+const port = process.env.PORT || 5000;
+
+
 http = require("http");
 express = require("express");
 layouts = require("express-ejs-layouts");
