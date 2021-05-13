@@ -1,4 +1,4 @@
-const port = 8080;
+const port = process.env.PORT || 5000;
 http = require("http");
 express = require("express");
 layouts = require("express-ejs-layouts");
