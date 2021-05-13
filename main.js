@@ -1,34 +1,45 @@
+const mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost:27017/bazaart", {
+  useNewUrlParser: true,
+});
+const User = require("./models/user");
+
 const port = 8080;
 http = require("http");
 express = require("express");
 layouts = require("express-ejs-layouts");
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
+const usersController = require("./controllers/userController");
 
 app = express();
-app.use(express.static
-  ("public"));
+app.use(express.static("public"));
 app.use(layouts);
 app.set("view engine", "ejs");
-app.use(express.static('public'));
+app.use(express.static("public"));
 app.use(express.json());
-app.use(express.urlencoded({
-  extended: false
-}));
+app.use(
+  express.urlencoded({
+    extended: false,
+  })
+);
 app.get("/profile/:myName", homeController.respondWithName);
 app.get("/", homeController.respondInfo);
-app.get("/register", homeController.registration);
-app.get("/home/:userHome", homeController.sendReqParam)
-  .listen(port, () => {
-    console.log(`The Express.js server has started and is listening
+//app.get("/register", homeController.registration);
+app.get("/home/:userHome", homeController.sendReqParam).listen(port, () => {
+  console.log(`The Express.js server has started and is listening
    ➥ on port number: ${port}`);
-  });
+});
+
+app.get("/users", usersController.getAllUsers);
+app.get("/register", usersController.getRegistrationPage);
+app.post("/save", usersController.saveUser);
 
 app.post("/", (req, res) => {
   console.log(req.body);
   console.log(req.query);
   res.send("POST Successful!");
-})
+});
 app.use((req, res, next) => {
   console.log(`request made to: ${req.url}`);
 
@@ -52,7 +63,6 @@ app.use(errorController.respondInternalError);
 //     res.writeHead(httpStatus.OK,contentTypes.html);
 //     utiles.getFile("views/home.html",res);
 //     });
-
 
 // http.createServer(router.handle).listen(port);
 // console.log("works")
