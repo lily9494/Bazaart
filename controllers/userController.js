@@ -25,7 +25,7 @@ exports.saveUser = (req, res) => {
     lastName: req.body.lastName,
     email: req.body.email,
     username: req.body.username,
-    username: req.body.password,
+    password: req.body.password,
   });
   newUser
     .save()
