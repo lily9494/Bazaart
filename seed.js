@@ -1,7 +1,7 @@
 const mongoose = require("mongoose"),
   User = require("./models/user");
 
-mongoose.connect("mongodb://localhost:27017/bazaart", {
+mongoose.connect(process.env.MONGODB_URI||"mongodb://localhost:27017/bazaart", {
   useNewUrlParser: true,
 });
 mongoose.connection;

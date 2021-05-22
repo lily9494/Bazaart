@@ -1,15 +1,16 @@
 process.env.NODE_ENV = 'test'
-const User = require('./models/user')
+const User = require('../models/user')
 const request = require('supertest')
+const mongoose = require('mongoose')
 module.exports = {
-    app: require('./app')
+    app: require('../app'),
     User: User,
     request: request
 }
 
-const mongoos = require('mongoose')
+
 const { afterAll, beforeEach } = require('@jest/globals')
-mongoos.Mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
 const db = mongoose.connection
 
 afterAll(async () => {

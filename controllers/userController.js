@@ -36,3 +36,14 @@ exports.saveUser = (req, res) => {
       res.send(error);
     });
 };
+exports.getUserParams=(body)=>{
+return{
+  
+  firstName: body.firstName,
+  lastName: body.lastName,
+  email: body.email,
+  username: body.username,
+  password: body.password
+  
+}
+}
