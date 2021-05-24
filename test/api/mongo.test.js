@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb')
+const uri = process.env.MONGODB_URI || ((process.env.NODE_ENV === 'test') ? '//localhost:27017/bazaart_test"' : 'mongodb://localhost:27017/bazaart"');
 
 describe('insert', () => {
   let connection
@@ -6,7 +7,7 @@ describe('insert', () => {
 
   beforeAll(async () => {
     console.log(process.env.MONGO_URL)
-    connection = await MongoClient.connect(process.env.MONGO_URL, {
+    connection = await MongoClient.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true
     })
@@ -18,7 +19,7 @@ describe('insert', () => {
   })
 
   it('should insert a doc into collection', async () => {
-    const users = db.collection('users')
+    const users = db.collection('User')
 
     const mockUser = { _id: 'some-user-id', name: 'John' }
     await users.insertOne(mockUser)
