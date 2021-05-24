@@ -19,7 +19,7 @@ exports.getAllUsers = (req, res) => {
     });
 };
 
-exports.saveUser = (req, res) => {
+exports.saveUser =async (req, res) => {
   let newUser = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -27,12 +27,20 @@ exports.saveUser = (req, res) => {
     username: req.body.username,
     password: req.body.password,
   });
-  newUser
-    .save()
-    .then(() => {
-      res.render("activationAcc");
-    })
-    .catch((error) => {
-      res.send(error);
-    });
+  try {
+    result=await newUser.save();
+    res.render("activationAcc");
+  } catch (error) {
+    res.send(error);
+    console.log(error.message);
+  }
+  // newUser
+  //   .save()
+  //   .then(() => {
+  //     res.render("activationAcc");
+  //   })
+  //   .catch((error) => {
+  //     res.send(error);
+  //     console.log(error.message);
+  //   });
 };

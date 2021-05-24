@@ -1,10 +1,13 @@
 const mongoose = require("mongoose"),
   userSchema = mongoose.Schema({
-    firstName: String,
-    lastName: String,
-    email: String,
-    username: String,
-    password:{}
+    firstName: {type:String, required:true},
+    lastName:  {type:String, required:true},
+    email: { type: String,required: true,lowercase: true,
+      unique: true},
+    username: { type: String,required: true,unique: true},
+    password:{ type:String ,required: true}
   });
 
-module.exports = mongoose.model("User", userSchema);
+  userSchema.methods.getInfo = function() {
+    return `username: ${this.username} email: ${this.email}`
+   };
