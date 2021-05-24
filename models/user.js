@@ -11,3 +11,4 @@ const mongoose = require("mongoose"),
   userSchema.methods.getInfo = function() {
     return `username: ${this.username} email: ${this.email}`
    };
+module.exports = mongoose.model("User", userSchema);

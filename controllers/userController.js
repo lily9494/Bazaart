@@ -31,7 +31,7 @@ exports.saveUser =async (req, res) => {
     result=await newUser.save();
     res.render("activationAcc");
   } catch (error) {
-    res.send(error);
+    res.send("something went wrong,please try again and check your entries");
     console.log(error.message);
   }
   // newUser

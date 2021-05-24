@@ -3,6 +3,8 @@ const mongoose = require("mongoose"),
 
 mongoose.connect("mongodb://localhost:27017/bazaart", {
   useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology:true
 });
 mongoose.connection;
 var contacts = [
