@@ -5,6 +5,8 @@ const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/bazaart"
 const mongoose = require("mongoose");
 mongoose.connect(uri, {
   useNewUrlParser: true,
+  useCreateIndex: true,
+  useUnifiedTopology:true
 });
 const User = require("./models/user");
 mongoose.Promise =global.Promise;
