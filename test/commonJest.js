@@ -1,10 +1,10 @@
   
 process.env.NODE_ENV = 'test'
-const Course = require('../models/course')
+const Users = require('../models/users')
 const request = require('supertest')
 module.exports = {
   app: require('../app'),
-  Course: Course,
+  Users: user,
   request: request
 }
 
@@ -18,7 +18,7 @@ afterAll(async () => {
 
 beforeEach(function (done) {
   // console.log('global beforeEach')
-  Course.deleteMany({})
+  Users.deleteMany({})
     .then(() => {
       // console.log('all courses deleted')
       done()

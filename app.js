@@ -1,6 +1,8 @@
 
 const User = require("./models/user");
-mongoose.Promise =global.Promise;
+const mongoose = require("mongoose")
+
+mongoose.Promise = global.Promise;
 
 
 http = require("http");
@@ -10,9 +12,11 @@ const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const usersController = require("./controllers/userController");
 const port = process.env.PORT || ((process.env.NODE.ENV === 'test') ? 30020: 3002)
-app.set('port', port)
 
 app = express();
+app.set('port', port)
+
+
 app.use(express.static("public"));
 app.use(layouts);
 app.set("view engine", "ejs");
