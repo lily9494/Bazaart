@@ -1,5 +1,7 @@
 const User = require("../models/user");
-const bcrypt=require('bcrypt')
+const bcrypt=require('bcrypt');
+const _=require('lodash');
+
 exports.getRegistrationPage = (req, res) => {
   res.render("../views/register.ejs");
 };
@@ -22,13 +24,18 @@ exports.getAllUsers = (req, res) => {
 exports.saveUser =async (req, res) => {
   const salt= await bcrypt.genSalt(10);
   const hashedPass=await bcrypt.hash(req.body.password,salt);
-  let newUser = new User({
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    email: req.body.email,
-    username: req.body.username,
-    password: hashedPass,
-  });
+  let user=await User.findOne({email:req.body.email});
+  if(user) return res.send('user already registered');
+
+  let username=await User.findOne({email:req.body.username});
+  if(username) return res.send('username already exist');
+
+  let newUser = new User(_.pick(req.body,['firstName',
+    'lastName',
+    'email',
+    'username',
+    'password']))
+ newUser.password=hashedPass;
   try {
     result=await newUser.save();
     res.render("activationAcc");
@@ -46,3 +53,16 @@ exports.saveUser =async (req, res) => {
   //     console.log(error.message);
   //   });
 };
+
+
+exports.loginUser =async (req, res)=>{
+     
+   //validate
+
+   //exist
+   let user=await User.findOne({email:req.body.email});
+   if(!user) return res.send('Invalid Email');
+  const passValid= await bcrypt.compare(req.body.password , user.password);
+  if(!passValid) return res.send('Invalid Password');
+  res.render("home");
+}
