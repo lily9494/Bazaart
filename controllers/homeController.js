@@ -29,3 +29,7 @@ exports.sendReqParam = (req, res) => {
 
         res.render("changePass");
           } 
+       exports.respondWithIndex = (req, res) => {
+
+        res.render("index",{ message: "index" });
+          } 

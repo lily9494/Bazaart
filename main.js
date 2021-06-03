@@ -42,7 +42,8 @@ app.get("/changePassword",homeController.respondWithChangePass);
 app.get("/users", usersController.getAllUsers);
 app.get("/register", usersController.getRegistrationPage);
 app.post("/", usersController.saveUser);
-app.post("/login",usersController.changePass);
+app.post("/index",usersController.changePass);
+app.get("/index",homeController.respondWithIndex);
 
 app.use((req, res, next) => {
   console.log(`request made to: ${req.url}`);

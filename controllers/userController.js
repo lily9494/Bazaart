@@ -66,5 +66,5 @@ User.update({email:req.body.email},{
 
   });
 
-  res.render("login");
+  res.render("index",{message:"password has been changed"});
 }
