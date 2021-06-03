@@ -31,18 +31,18 @@ app.use(
   })
 );
 app.get("/profile/:myName", homeController.respondWithName);
-app.get("/", homeController.respondHomePageWebsite);
-app.get("/login", homeController.respondWithLogin);
-//app.get("/register", homeController.registration);
-app.get("/home/:userHome", homeController.sendReqParam).listen(port, () => {
+app.get("/", homeController.respondHomePageWebsite).listen(port, () => {
   console.log(`The Express.js server has started and is listening
    ➥ on port number: ${port}`);
 });
-
+app.get("/login", homeController.respondWithLogin);
+//app.get("/register", homeController.registration);
+app.get("/home/:userHome", homeController.sendReqParam);
+app.get("/changePassword",homeController.respondWithChangePass);
 app.get("/users", usersController.getAllUsers);
 app.get("/register", usersController.getRegistrationPage);
 app.post("/", usersController.saveUser);
-
+app.post("/login",usersController.changePass);
 
 app.use((req, res, next) => {
   console.log(`request made to: ${req.url}`);

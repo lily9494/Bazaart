@@ -46,3 +46,25 @@ exports.saveUser =async (req, res) => {
   //     console.log(error.message);
   //   });
 };
+exports.changePass =async (req, res)=>{
+
+  const salt= await bcrypt.genSalt(10);
+  const hashedPass=await bcrypt.hash(req.body.newPassword,salt);
+
+   const user=await User.findOne({email:req.body.email});
+   if(!user) return res.send('Invalid Email');
+  const passValid= await bcrypt.compare(req.body.password , user.password);
+  if(!passValid) return res.send('Invalid Password');
+
+User.update({email:req.body.email},{
+  $set:{
+    password:hashedPass
+  }
+}, function(err, res) {
+    if (err) throw err;
+    console.log("1 document updated");
+
+  });
+
+  res.render("login");
+}
