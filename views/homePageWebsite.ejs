@@ -1,2 +1,7 @@
 
 <header><%- include("./partials/navMain") %></header>
+<% if (locals.user) { %>
+
+    <h1>Hello <%=user%>. Thank you for logging in!</h1>
+   
+   <% }%>

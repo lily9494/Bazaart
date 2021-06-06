@@ -3,7 +3,7 @@
 const port = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/bazaart"
 const mongoose = require("mongoose");
-const User = require("./models/user");
+const auth = require("./auth/middleware");
 const bodyParser = require("body-parser");
 
 mongoose.connect(uri, {
@@ -40,11 +40,11 @@ app.use(
   })
 );
 app.get("/profile/:myName", homeController.respondWithName);
-app.get("/", homeController.respondHomePageWebsite);
+app.get("/", auth, homeController.respondHomePageWebsite);
 app.get("/login", homeController.respondWithLogin);
 app.post("/login", authentication.login);
 //app.get("/register", homeController.registration);
-app.get("/home/:userHome", homeController.sendReqParam).listen(port, () => {
+app.get("/home", auth, homeController.sendReqParam).listen(port, () => {
   console.log(`The Express.js server has started and is listening
    ➥ on port number: ${port}`);
 });
@@ -52,6 +52,26 @@ app.get("/home/:userHome", homeController.sendReqParam).listen(port, () => {
 app.get("/users", usersController.getAllUsers);
 app.get("/register", usersController.getRegistrationPage);
 app.post("/", usersController.saveUser);
+
+// Middleware
+app.use(function(req, res, next) {
+
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,authorization');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
+});
 
 app.use(bodyParser.json());
 
@@ -64,21 +84,3 @@ app.use((req, res, next) => {
 
 app.use(errorController.respondNoResourceFound);
 app.use(errorController.respondInternalError);
-
-// httpStatus=require("http-status-codes"),
-// contentTypes=require("./contentTypes"),
-// utiles=require("./utiles.js"),
-// router=require("./router");
-
-// router.get("/",(req,res)=>{
-// res.writeHead(httpStatus.OK,contentTypes.html);
-// utiles.getFile("views/login.html",res);
-// });
-
-// router.get("/home",(req,res)=>{
-//     res.writeHead(httpStatus.OK,contentTypes.html);
-//     utiles.getFile("views/home.html",res);
-//     });
-
-// http.createServer(router.handle).listen(port);
-// console.log("works")

@@ -9,6 +9,13 @@
         <form method="POST" action="/login">
         <div class="card-content">
           <div class="form-field">
+            <div class="error-field">
+                <% if (locals.error) { %>
+
+                  <p style="color:red"><%=error%></p>
+                 
+                 <% }%>
+            </div>
             <label for="username">Username</label>
             <input type="text" name="username" id="username">
           </div><br>

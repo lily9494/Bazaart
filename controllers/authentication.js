@@ -1,9 +1,10 @@
 const User = require("../models/user");
 const express = require("express");
 const { check, validationResult} = require("express-validator");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
+const homeView = require("../controllers/homeController")
 
 
 exports.login = async (req, res) => {
@@ -23,16 +24,16 @@ exports.login = async (req, res) => {
         }).exec();
 
         if (!user){
-            return res.status(400).json({
-                message: "User Not Exist"
-            });
+            console.log("User does not exist.")
+            res.status(401).render("login", {"error": "Wrong credentials, please try again."});
         }
-        console.log(password, user.password)
-        const isMatch = await bcrypt.compare(bcrypt.hash(password), bcrypt.hash(user.password));
-        if (!isMatch){
-            return res.status(400).json({
-                message: "Incorrect Password !"
-            });
+
+        
+        
+        const isMatch = await bcrypt.compare(password, user.password)
+        if(!isMatch){
+            console.log("Authentication failed. Password doesn't match");
+            res.status(401).render("login", {"error": "Wrong credentials, please try again."});
         }
 
         const payload = {
@@ -49,16 +50,15 @@ exports.login = async (req, res) => {
             },
             (err, token) => {
               if (err) throw err;
-              res.status(200).json({
-                token,
-                message: "Success!"
-              });
+            res.cookie('token', token).status(200).redirect("/")
+            next()
             }
         );
+
     } catch(e){
         console.error(e);
         res.status(500).json({
-            message: "Server Error"
+            message: "Something went wrong. Please try Again."
         });
     }
 }
