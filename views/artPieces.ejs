@@ -1,20 +1,22 @@
 <link rel="stylesheet" href="bazaart.css">
 
-<div>
+<header><%- include("./partials/navMain") %></header>
+<h1>ART GALLERY</h1>
+<div class="container">
     <% artPieces.forEach(artPiece => {%>
-        <div>
         <div class="frame">
             <div class="mat">
                 <div class="art">
+                    <a href="<%= artPiece.img %>"</a>
                     <img src= "<%= artPiece.img %>" width="540px" height="auto"> 
+                    </a>
                 </div>
             </div>
         </div>
         <div class="desc"> 
-            <div><%= artPiece.title %></div>
-            <div><%= artPiece.artist %></div>
-            <div><%= artPiece.price %></div> 
-        </div>
+            <div>Title: <%= artPiece.title %></div>
+            <div> Artist: <%= artPiece.artist %></div>
+            <div>Price: <%= artPiece.price %></div> 
         </div>
     <% })%>
 </div>
