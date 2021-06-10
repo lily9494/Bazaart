@@ -1,9 +1,11 @@
 .frame {
   position: relative;
-  width: 20%;
   padding-bottom: 20%;
   background: black;
   box-shadow: 0 10px 7px -5px rgba(0, 0, 0, 0.3);
+  margin-top: 10;
+  width: calc(100% / 4);
+  height: 150px;
 }
 
 .mat {
@@ -11,8 +13,8 @@
   background: white;
   top: 3.0303%;
   bottom: 3.0303%;
-  left: 2.5%;
-  right: 2.5%;
+  left: 3.0303%;
+  right: 3.0303%;
   box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5) inset;
 }
 
@@ -26,21 +28,35 @@
 
 .art img {
   width: 100%;
+  position: absolute;
+  top: 13;
+  bottom: 15;
 }
 
-.art:after {
+/* .art:after {
   content: "";
   display: block;
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.5) inset;
+  box-shadow: 0px 0px 25px 0px rgba(0, 0, 0, 0.5) inset;
+} */
+
+.gallery {
+  flex-wrap: wrap;
 }
 
-div.desc {
-  position: relative;
-  padding: 15px;
-  border-width: medium;
-  border-color: black;
+.container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.desc {
+  margin: 10 0 10 10;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
 }
