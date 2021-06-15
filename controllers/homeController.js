@@ -22,3 +22,8 @@ exports.respondWithLogin = (req, res) => {
 exports.addNewArtPiece = (req, res) => {
   res.render("addNewArtPiece");
 };
+  exports.respondWithChangePass = (req, res) => {
+
+        res.render("changePass");
+          } 
+
