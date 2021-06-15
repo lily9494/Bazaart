@@ -1,16 +1,13 @@
-
-
 const port = process.env.PORT || 5000;
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/bazaart"
+const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/bazaart";
 const mongoose = require("mongoose");
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useUnifiedTopology:true
+  useUnifiedTopology: true,
 });
 const User = require("./models/user");
-mongoose.Promise =global.Promise;
-
+mongoose.Promise = global.Promise;
 
 http = require("http");
 express = require("express");
@@ -18,12 +15,12 @@ layouts = require("express-ejs-layouts");
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const usersController = require("./controllers/userController");
+const artPieceController = require("./controllers/artPieceController");
 
 app = express();
 app.use(express.static("public"));
 app.use(layouts);
 app.set("view engine", "ejs");
-app.use(express.static("public"));
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -41,8 +38,14 @@ app.get("/home/:userHome", homeController.sendReqParam);
 app.get("/changePassword",homeController.respondWithChangePass);
 app.get("/users", usersController.getAllUsers);
 app.get("/register", usersController.getRegistrationPage);
+app.get("/artPieces", artPieceController.getAllArtPieces);
+app.get("/addNewArtPiece", artPieceController.getAddNewArtPiecePage);
 app.post("/", usersController.saveUser);
+
 app.post("/login",usersController.changePass);
+
+app.post("/", artPieceController.saveArtPiece);
+
 
 app.use((req, res, next) => {
   console.log(`request made to: ${req.url}`);
