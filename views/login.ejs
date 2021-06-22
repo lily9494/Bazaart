@@ -6,22 +6,31 @@
         <div class="card-action teal lighten-1 white-text">
           <h3>Login Form</h3>
         </div>
-  
+        <form method="POST" action="/login">
         <div class="card-content">
           <div class="form-field">
+            <div class="error-field">
+                <% if (locals.error) { %>
+
+                  <p style="color:red"><%=error%></p>
+                 
+                 <% }%>
+            </div>
             <label for="username">Username</label>
-            <input type="text" id="username">
+            <input type="text" name="username" id="username">
           </div><br>
   
           <div class="form-field">
             <label for="password">Password</label>
-            <input type="password" id="password">
+            <input type="password" name="password" id="password">
           </div><br>
 
   
           <div class="form-field">
-            <button class="btn-large waves-effect waves-dark" style="width:100%;">Login</button>
-          </div><br>
+            <button class="btn-large waves-effect waves-dark" type="submit"style="width:100%;">Login</button>
+          </div>
+          </form>
+          <br>
           <div>
             Don't have an account yet?<a href="register">Sign Up</a>!
           </div>

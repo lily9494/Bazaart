@@ -1,11 +1,21 @@
 const port = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/bazaart";
 const mongoose = require("mongoose");
+const auth = require("./auth/middleware");
+const bodyParser = require("body-parser");
+
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useUnifiedTopology: true,
+  useUnifiedTopology:true
+}, (err, client) => {
+  if (err) return console.log(err)
+
+  // Storing a reference to the database so you can use it later
+  console.log(`Connected MongoDB: ${uri}`)
 });
+
+
 const User = require("./models/user");
 mongoose.Promise = global.Promise;
 
@@ -15,6 +25,7 @@ layouts = require("express-ejs-layouts");
 const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const usersController = require("./controllers/userController");
+const authentication = require("./controllers/authentication");
 const artPieceController = require("./controllers/artPieceController");
 
 app = express();
@@ -28,11 +39,18 @@ app.use(
   })
 );
 app.get("/profile/:myName", homeController.respondWithName);
-app.get("/", homeController.respondHomePageWebsite).listen(port, () => {
+app.get("/", auth, homeController.respondHomePageWebsite);
+app.get("/login", homeController.respondWithLogin);
+app.post("/login", authentication.login);
+//app.get("/register", homeController.registration);
+app.get("/home", auth, homeController.sendReqParam).listen(port, () => {
   console.log(`The Express.js server has started and is listening
    ➥ on port number: ${port}`);
 });
-app.get("/login", homeController.respondWithLogin);
+
+app.post("/changepass",usersController.changePass);
+
+app.post("/", artPieceController.saveArtPiece);
 //app.get("/register", homeController.registration);
 app.get("/home/:userHome", homeController.sendReqParam);
 app.get("/changePassword",homeController.respondWithChangePass);
@@ -42,9 +60,27 @@ app.get("/artPieces", artPieceController.getAllArtPieces);
 app.get("/addNewArtPiece", artPieceController.getAddNewArtPiecePage);
 app.post("/", usersController.saveUser);
 
-app.post("/login",usersController.changePass);
+// Middleware
+app.use(function(req, res, next) {
 
-app.post("/", artPieceController.saveArtPiece);
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type,authorization');
+
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
+
+  // Pass to next layer of middleware
+  next();
+});
+
+app.use(bodyParser.json());
 
 
 app.use((req, res, next) => {
@@ -55,21 +91,3 @@ app.use((req, res, next) => {
 
 app.use(errorController.respondNoResourceFound);
 app.use(errorController.respondInternalError);
-
-// httpStatus=require("http-status-codes"),
-// contentTypes=require("./contentTypes"),
-// utiles=require("./utiles.js"),
-// router=require("./router");
-
-// router.get("/",(req,res)=>{
-// res.writeHead(httpStatus.OK,contentTypes.html);
-// utiles.getFile("views/login.html",res);
-// });
-
-// router.get("/home",(req,res)=>{
-//     res.writeHead(httpStatus.OK,contentTypes.html);
-//     utiles.getFile("views/home.html",res);
-//     });
-
-// http.createServer(router.handle).listen(port);
-// console.log("works")
