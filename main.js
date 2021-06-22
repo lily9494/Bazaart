@@ -1,7 +1,5 @@
-
-
 const port = process.env.PORT || 5000;
-const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/bazaart"
+const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/bazaart";
 const mongoose = require("mongoose");
 const auth = require("./auth/middleware");
 const bodyParser = require("body-parser");
@@ -17,8 +15,9 @@ mongoose.connect(uri, {
   console.log(`Connected MongoDB: ${uri}`)
 });
 
-mongoose.Promise =global.Promise;
 
+const User = require("./models/user");
+mongoose.Promise = global.Promise;
 
 http = require("http");
 express = require("express");
@@ -27,12 +26,12 @@ const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const usersController = require("./controllers/userController");
 const authentication = require("./controllers/authentication");
+const artPieceController = require("./controllers/artPieceController");
 
 app = express();
 app.use(express.static("public"));
 app.use(layouts);
 app.set("view engine", "ejs");
-app.use(express.static("public"));
 app.use(express.json());
 app.use(
   express.urlencoded({
@@ -49,8 +48,16 @@ app.get("/home", auth, homeController.sendReqParam).listen(port, () => {
    ➥ on port number: ${port}`);
 });
 
+app.post("/changepass",usersController.changePass);
+
+app.post("/", artPieceController.saveArtPiece);
+//app.get("/register", homeController.registration);
+app.get("/home/:userHome", homeController.sendReqParam);
+app.get("/changePassword",homeController.respondWithChangePass);
 app.get("/users", usersController.getAllUsers);
 app.get("/register", usersController.getRegistrationPage);
+app.get("/artPieces", artPieceController.getAllArtPieces);
+app.get("/addNewArtPiece", artPieceController.getAddNewArtPiecePage);
 app.post("/", usersController.saveUser);
 
 // Middleware

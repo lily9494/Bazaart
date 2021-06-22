@@ -33,3 +33,7 @@ exports.registration = (req, res) => {
 exports.respondWithLogin = (req, res) => {
     res.render("login");
 } 
+
+exports.respondWithChangePass = (req, res) => {
+    res.render("changePass");
+} 
