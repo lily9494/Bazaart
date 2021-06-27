@@ -29,8 +29,23 @@ app.use(
     extended: false,
   })
 );
-app.listen(port);
-app.use("/",router)
+
+app.get("/profile/:myName", homeController.respondWithName);
+app.get("/", homeController.respondHomePageWebsite).listen(port, () => {
+  console.log(`The Express.js server has started and is listening
+   ➥ on port number: ${port}`);
+});
+app.get("/login", homeController.respondWithLogin);
+//app.get("/register", homeController.registration);
+app.get("/home/:userHome", homeController.sendReqParam);
+app.get("/changePassword",homeController.respondWithChangePass);
+app.get("/users", usersController.getAllUsers);
+app.get("/register", usersController.getRegistrationPage);
+app.get("/artPieces", artPieceController.getAllArtPieces);
+app.get("/addNewArtPiece", artPieceController.getAddNewArtPiecePage);
+app.get("/contactUs",homeController.respondContact);
+app.post("/", usersController.saveUser);
+
 
 
 app.get("/artPieces", artPieceController.getAllArtPieces);

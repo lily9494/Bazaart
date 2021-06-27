@@ -10,6 +10,9 @@ exports.respondWithName = (req, res) => {
 exports.respondHomePageWebsite = (req, res) => {
   res.render("homePageWebsite");
 };
+exports.respondContact = (req, res) => {
+  res.render("../views/contactUs.vue");
+};
 exports.respondProfile = (req, res) => {
   res.render("profile");
 };
