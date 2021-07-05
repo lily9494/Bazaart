@@ -6,7 +6,8 @@ const mongoose = require("mongoose"),
   methodOverride = require("method-override"),
   expressSession = require("express-session"),
   cookieParser = require("cookie-parser"),
-  connectFlash = require("connect-flash");
+  connectFlash = require("connect-flash"),
+  expressValidator = require("express-validator");
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useCreateIndex: true,
@@ -61,17 +62,19 @@ router.use(
     extended: false,
   })
 );
+// immer nach urlencoded und express.json
+router.use(expressValidator());
 router.get("/profile/:myName", homeController.respondWithName);
 
 router.get("/login", homeController.respondWithLogin);
 //router.get("/register", homeController.registration);
-router.get("/home/:userHome", homeController.sendReqParam);
+router.get("/home/:id", homeController.sendReqParam);
 router.get("/changePassword", homeController.respondWithChangePass);
 router.get("/users", usersController.index);
 router.get("/users/:id", usersController.showUsersArtsPage);
 router.get("/register", usersController.getRegistrationPage);
 router.get("/addNewArtPiece", addNewArtPiece.getAddArtPiecePage);
-router.post("/register", usersController.saveUser);
+router.post("/register", usersController.validate,usersController.saveUser);
 router.post("/home", usersController.loginUser);
 router.put("/changePassword", usersController.changePass);
 router.post("/addNewArtPiece", addNewArtPiece.saveArtPiece);

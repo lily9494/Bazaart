@@ -21,6 +21,11 @@ exports.index = (req, res) => {
       console.log("promise complete");
     });
 };
+exports.redirectView= (req, res, next) => {
+  let redirectPath = res.locals.redirect;
+  if (redirectPath) res.redirect(redirectPath);
+  else next();
+ };
 exports.showUsersArtsPage = (req, res) => {
   let userId = req.params.id;
  ArtPiece.find({userId:userId})
@@ -100,7 +105,27 @@ User.update({email:req.body.email},{
 
   res.render("login");
 }
+exports.validate=(req, res, next) => {
+  req.sanitizeBody("email").normalizeEmail({
+  all_lowercase: true
+  }).trim();
+  req.check("email", "Email is invalid").isEmail();
+ 
+  req.check("password", "Password cannot be empty").notEmpty();
+  req.getValidationResult().then((error) => {
+  if (!error.isEmpty()) {
+ let messages = error.array().map(e => e.msg);
+ req.skip = true; 
+ res.render("register",{ flashMessages: {
+  error:  messages.join(" and ")
+  }})
 
+ next();
+  } else {
+ next();
+  }
+  });
+ }
 exports.loginUser =async (req, res)=>{
      
   //validate
@@ -110,5 +135,5 @@ exports.loginUser =async (req, res)=>{
   if(!user) return res.send('Invalid Email');
  const passValid= await bcrypt.compare(req.body.password , user.password);
  if(!passValid) return res.send('Invalid Password');
- res.render("home");
+ res.render(`home`);
 }
