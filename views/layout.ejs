@@ -1,6 +1,15 @@
 
 <body>
-  
+  <div class="flashes">
+    <% if (flashMessages) { %>
+    <% if (flashMessages.success) { %>
+   <div class="flash success"><%= flashMessages.success %></div>
+    <% } else if (flashMessages.error) { %>
+   <div class="flash error"><%= flashMessages.error %></div>
+   <% } %>
+   <% } %>
+   </div>
+   
   <link rel="stylesheet" type="text/css" href="../public/css/layout.css">  
      <!--Import Google Icon Font-->
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

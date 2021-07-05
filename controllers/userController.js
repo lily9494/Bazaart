@@ -53,10 +53,17 @@ exports.saveUser =async (req, res) => {
     'password']))
  newUser.password=hashedPass;
   try {
+   
     result=await newUser.save();
-    res.render("activationAcc");
+
+    res.render("register" ,{ flashMessages: {
+      success: "account registered successfully"
+      }}); 
+       req.flash("success", `${newUser.email}'s account created successfully!`)
   } catch (error) {
-    res.send("something went wrong,please try again and check your entries");
+    res.render("register",{ flashMessages: {
+      error: `failed to create account ${error.message}`
+      }});
     console.log(error.message);
   }
   // newUser

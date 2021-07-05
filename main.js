@@ -3,18 +3,21 @@
 const port = process.env.PORT || 5000;
 const uri = process.env.MONGODB_URI || "mongodb://localhost:27017/bazaart";
 const mongoose = require("mongoose"),
-methodOverride=require("method-override");
+  methodOverride = require("method-override"),
+  expressSession = require("express-session"),
+  cookieParser = require("cookie-parser"),
+  connectFlash = require("connect-flash");
 mongoose.connect(uri, {
   useNewUrlParser: true,
   useCreateIndex: true,
-  useUnifiedTopology:true
+  useUnifiedTopology: true
 });
 const User = require("./models/user");
-mongoose.Promise =global.Promise;
+mongoose.Promise = global.Promise;
 
 const http = require("http"),
-express = require("express"),
-router = express.Router();
+  express = require("express"),
+  router = express.Router();
 
 layouts = require("express-ejs-layouts");
 const homeController = require("./controllers/homeController");
@@ -23,18 +26,34 @@ const usersController = require("./controllers/userController");
 const addNewArtPiece = require("./controllers/artPieceController");
 
 app = express();
- app.set("view engine", "ejs");
- app.get("/", homeController.respondHomePageWebsite).listen(port, () => {
+app.set("view engine", "ejs");
+app.get("/", homeController.respondHomePageWebsite).listen(port, () => {
   console.log(`The Express.js server has started and is listening
    ➥ on port number: ${port}`);
 });
 app.use("/", router);
 router.use(methodOverride("_method", {
   methods: ["POST", "GET"]
- }));
+}));
 router.use(express.static("public"));
 router.use(layouts);
 
+router.use(cookieParser("secret_passcode"));
+router.use(expressSession({
+  secret: "secret_passcode",
+  cookie: {
+    maxAge: 4000000
+  },
+  resave: false,
+  saveUninitialized: false
+}));
+router.use(connectFlash());
+router.use((req, res, next) => {
+  res.locals.flashMessages = req.flash();
+  next();
+ });
+
+ 
 router.use(express.static("public"));
 router.use(express.json());
 router.use(
@@ -47,15 +66,15 @@ router.get("/profile/:myName", homeController.respondWithName);
 router.get("/login", homeController.respondWithLogin);
 //router.get("/register", homeController.registration);
 router.get("/home/:userHome", homeController.sendReqParam);
-router.get("/changePassword",homeController.respondWithChangePass);
+router.get("/changePassword", homeController.respondWithChangePass);
 router.get("/users", usersController.index);
 router.get("/users/:id", usersController.showUsersArtsPage);
 router.get("/register", usersController.getRegistrationPage);
-router.get("/addNewArtPiece",addNewArtPiece.getAddArtPiecePage);
-router.post("/", usersController.saveUser);
-router.post("/home",usersController.loginUser);
-router.put("/changePassword",usersController.changePass);
-router.post("/addNewArtPiece",addNewArtPiece.saveArtPiece);
+router.get("/addNewArtPiece", addNewArtPiece.getAddArtPiecePage);
+router.post("/register", usersController.saveUser);
+router.post("/home", usersController.loginUser);
+router.put("/changePassword", usersController.changePass);
+router.post("/addNewArtPiece", addNewArtPiece.saveArtPiece);
 router.use((req, res, next) => {
   console.log(`request made to: ${req.url}`);
 
