@@ -1,0 +1,16 @@
+
+<table class="table">
+ <tr>
+    <% artPieces.forEach(artPiece => { %>
+        <tr>
+       <td>
+           <%= artPiece.seller %></td>
+      
+       <td><%= artPiece.title %></td>
+       <td><%= artPiece.price %></td>
+       
+        </tr>
+        <% }); %>
+ </tr>
+ 
+</table>

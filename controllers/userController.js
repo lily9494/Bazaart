@@ -1,4 +1,5 @@
-const User = require("../models/user");
+const User = require("../models/user"),
+ArtPiece=require('../models/artPiece');
 const bcrypt=require('bcrypt');
 const _=require('lodash');
 
@@ -6,11 +7,26 @@ exports.getRegistrationPage = (req, res) => {
   res.render("../views/register.ejs");
 };
 
-exports.getAllUsers = (req, res) => {
+exports.index = (req, res) => {
   User.find({})
     .exec()
     .then((users) => {
-      res.render("users", { users: users });
+      res.render("index", { users: users });
+    })
+    .catch((error) => {
+      console.log(error.message);
+      return [];
+    })
+    .then(() => {
+      console.log("promise complete");
+    });
+};
+exports.showUsersArtsPage = (req, res) => {
+  let userId = req.params.id;
+ ArtPiece.find({userId:userId})
+    .exec()
+    .then((artPieces) => {
+      res.render("showUsersArts", { artPieces: artPieces });
     })
     .catch((error) => {
       console.log(error.message);
