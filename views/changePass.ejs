@@ -1,6 +1,19 @@
+<head><script src="https://unpkg.com/vue@next"></script></head>
+<body>
+  
+
 <header><%- include("./partials/navLogin") %></header>
 <form action="/changePassword?_method=PUT" method="post">
  <div class="row">
+   <div id="app">
+        <p>
+          {{message}}
+        </p>
+   </div>
+   <script src="app.js">
+     
+   </script>
+ 
   <div class="col s12 m8 l4 offset-m2 offset-l4">
     <div class="card">
       <div class="card-action teal lighten-1 white-text">
@@ -28,3 +41,4 @@
    </div>
  </div>
 </form>
+</body>
