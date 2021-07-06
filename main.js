@@ -25,6 +25,8 @@ const homeController = require("./controllers/homeController");
 const errorController = require("./controllers/errorController");
 const usersController = require("./controllers/userController");
 const addNewArtPiece = require("./controllers/artPieceController");
+const middleAuth=require("./middleware/auth");
+const auth = require("./middleware/auth");
 
 app = express();
 app.set("view engine", "ejs");
@@ -69,7 +71,7 @@ router.get("/profile/:myName", homeController.respondWithName);
 router.get("/login", homeController.respondWithLogin);
 //router.get("/register", homeController.registration);
 router.get("/home/:id", homeController.sendReqParam);
-router.get("/changePassword", homeController.respondWithChangePass);
+router.get("/changePassword", auth,homeController.respondWithChangePass);
 router.get("/users", usersController.index);
 router.get("/users/:id", usersController.showUsersArtsPage);
 router.get("/register", usersController.getRegistrationPage);

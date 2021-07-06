@@ -1,7 +1,8 @@
 const User = require("../models/user"),
 ArtPiece=require('../models/artPiece');
 const bcrypt=require('bcrypt');
-const _=require('lodash');
+const _=require('lodash'),
+jwt=require("jsonwebtoken")
 
 exports.getRegistrationPage = (req, res) => {
   res.render("../views/register.ejs");
@@ -138,5 +139,7 @@ exports.loginUser =async (req, res)=>{
   if(!user) return res.send('Invalid Email');
  const passValid= await bcrypt.compare(req.body.password , user.password);
  if(!passValid) return res.send('Invalid Password');
- res.render(`home`);
+ const token=jwt.sign({_id:user._id},"privateKey");
+ res.header('x-authToken',token).render("changePass");
+//  res.render(`home`);
 }
