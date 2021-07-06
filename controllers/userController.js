@@ -11,7 +11,10 @@ exports.index = (req, res) => {
   User.find({})
     .exec()
     .then((users) => {
+      if (req.query.format === "json"){
+        res.json({ users });}
       res.render("index", { users: users });
+    
     })
     .catch((error) => {
       console.log(error.message);
